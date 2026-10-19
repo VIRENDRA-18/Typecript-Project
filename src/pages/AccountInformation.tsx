@@ -1,0 +1,269 @@
+﻿
+import { useState } from "react";
+import type { ChangeEvent, FormEvent } from "react";
+import ArrowIcon from "../components/ArrowIcon";
+import StepIndicator from "../components/StepIndicator";
+import FormField from "../components/FormField";
+import { validateAccountForm } from "../utils/validation";
+import { useOnboarding } from "../context/OnboardingContext";
+import type { AccountData } from "../types";
+
+type AccountInformationProps = {
+  onBack: () => void;
+  onNext: () => void;
+};
+
+function AccountInformation({ onBack, onNext }: AccountInformationProps) {
+  const { state, dispatch } = useOnboarding();
+
+  const [errors, setErrors] = useState<Partial<Record<keyof AccountData, string>>>({});
+  const [showPassword, setShowPassword] = useState(false);
+
+  const formData = state.accountData;
+  const password = formData.password || "";
+
+  const passwordChecks = [
+    password.length >= 8,
+    /[A-Z]/.test(password),
+    /[a-z]/.test(password),
+    /[0-9]/.test(password),
+    /[^A-Za-z0-9]/.test(password),
+  ];
+
+  const strengthScore = passwordChecks.filter(Boolean).length;
+
+  let strength = "";
+  let strengthColor = "bg-slate-200";
+  let strengthWidth = "0%";
+
+  if (password) {
+    strengthWidth = `${(strengthScore / 5) * 100}%`;
+
+    if (strengthScore <= 2) {
+      strength = "Weak";
+      strengthColor = "bg-red-500";
+    } else if (strengthScore <= 4) {
+      strength = "Medium";
+      strengthColor = "bg-amber-500";
+    } else {
+      strength = "Strong";
+      strengthColor = "bg-emerald-500";
+    }
+  }
+
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+    const fieldName = name as keyof AccountData;
+
+    dispatch({
+      type: "UPDATE_ACCOUNT",
+      payload: { [fieldName]: value } as Partial<AccountData>,
+    });
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [fieldName]: "",
+    }));
+  }
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const validationErrors = validateAccountForm(formData);
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length > 0) {
+      return;
+    }
+
+    onNext();
+  }
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-6 sm:px-6 lg:p-8">
+      <div className="w-full max-w-3xl rounded-2xl border border-blue-100 bg-white p-5 shadow-sm sm:p-6 lg:p-8">
+
+        
+        <StepIndicator currentStep={0} />
+
+        
+        <div className="mt-6">
+          <h1 className="text-2xl font-bold text-blue-950">
+            Create your account
+          </h1>
+
+          <p className="mt-2 text-sm leading-6 text-slate-500">
+            Let's set up your basic information.
+          </p>
+        </div>
+
+        
+        <form onSubmit={handleSubmit}>
+          <div className="mt-6 space-y-4">
+            <FormField
+              label="Full Name"
+              name="fullName"
+              type="text"
+              placeholder="Enter your full name"
+              value={formData.fullName}
+              onChange={handleChange}
+              required
+              error={errors.fullName}
+            />
+
+            <FormField
+              label="Email Address"
+              name="email"
+              type="email"
+              placeholder="Enter your email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              error={errors.email}
+            />
+
+            
+            <div className="w-full">
+              <label
+                htmlFor="password"
+                className="mb-2 block text-sm font-medium text-slate-700"
+              >
+                Password <span className="text-red-500">*</span>
+              </label>
+
+              <div className="relative">
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={handleChange}
+                  placeholder="Enter your password"
+                  required
+                  autoComplete="new-password"
+                  aria-invalid={Boolean(errors.password)}
+                  className={`w-full appearance-none rounded-lg border px-4 py-3 pr-12 text-sm outline-none focus:ring-2 [&::-ms-reveal]:hidden [&::-webkit-credentials-auto-fill-button]:hidden ${
+                    errors.password
+                      ? "border-red-500 focus:border-red-500 focus:ring-red-100"
+                      : "border-slate-300 focus:border-blue-500 focus:ring-blue-100"
+                  }`}
+                />
+
+                
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((previous) => !previous)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  aria-pressed={showPassword}
+                  className="absolute inset-y-0 right-3 flex items-center text-slate-500 transition hover:text-blue-600 focus:outline-none"
+                >
+                  {showPassword ? (
+                    
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-5 w-5"
+                      aria-hidden="true"
+                    >
+                      <path d="M3 3l18 18" />
+                      <path d="M10.6 10.6a2 2 0 002.8 2.8" />
+                      <path d="M9.9 5.2A10.7 10.7 0 0112 5c5 0 8.5 4.5 9 7-.2 1.2-1.2 2.7-2.7 4" />
+                      <path d="M6.2 6.2C3.9 7.7 2.3 10 2 12c.5 2.5 4 7 10 7 1.1 0 2.1-.2 3-.5" />
+                    </svg>
+                  ) : (
+                    
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-5 w-5"
+                      aria-hidden="true"
+                    >
+                      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+
+              
+              {password && (
+                <div className="mt-2">
+                  <div
+                    className="h-1 w-full overflow-hidden rounded-full bg-slate-200"
+                    role="progressbar"
+                    aria-label="Password strength"
+                    aria-valuemin={0}
+                    aria-valuemax={5}
+                    aria-valuenow={strengthScore}
+                  >
+                    <div
+                      className={`h-full rounded-full transition-all duration-300 ${strengthColor}`}
+                      style={{ width: strengthWidth }}
+                    />
+                  </div>
+
+                  <div className="mt-1 flex items-center justify-between">
+                    <span className="text-xs text-slate-400">
+                      Password strength
+                    </span>
+
+                    <span
+                      className={`text-xs font-semibold ${
+                        strength === "Weak"
+                          ? "text-red-500"
+                          : strength === "Medium"
+                            ? "text-amber-500"
+                            : "text-emerald-500"
+                      }`}
+                    >
+                      {strength}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              
+              {errors.password && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.password}
+                </p>
+              )}
+            </div>
+          </div>
+
+          
+          <div className="mt-7 flex items-center justify-between gap-4 border-t border-slate-100 pt-5">
+            <button
+              type="button"
+              onClick={onBack}
+              className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-5 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-slate-100"
+            >
+              <ArrowIcon direction="left" />
+              Back
+            </button>
+
+            <button
+              type="submit"
+              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100"
+            >
+              Next
+              <ArrowIcon direction="right" />
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+export default AccountInformation;
