@@ -1,6 +1,6 @@
-﻿import StepIndicator from "../components/StepIndicator";
 import { useOnboarding } from "../context/OnboardingContext";
 import ArrowIcon from "../components/ArrowIcon";
+import WizardStepPanel from "../components/WizardStepPanel";
 import type { ReactNode } from "react";
 import type { Plan } from "../types";
 
@@ -126,13 +126,10 @@ function Review({
   ];
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-6 sm:px-6 lg:p-8">
+    <WizardStepPanel>
       
-      <div className="w-full max-w-4xl rounded-2xl border border-blue-100 bg-white p-5 shadow-sm sm:p-6 lg:p-8">
-        <StepIndicator currentStep={4} />
-
-        <div className="mt-7">
-          <h1 className="text-2xl font-bold text-blue-950">
+        <div className="mt-0">
+          <h1 className="text-2xl font-bold tracking-[-0.025em] text-blue-950">
             Review your information
           </h1>
           <p className="mt-2 text-sm leading-6 text-slate-500">
@@ -141,11 +138,11 @@ function Review({
         </div>
 
         
-        <div className="mt-6 rounded-xl border border-blue-100 px-4 sm:px-5">
+        <div className="mt-6 rounded-xl border border-blue-100 px-4 sm:px-5 [@media(min-width:901px)_and_(max-height:760px)]:mt-3">
           {sections.map((section, index) => (
             <section
               key={section.title}
-              className={`flex items-start gap-3 py-4 sm:gap-4 sm:py-5 ${
+              className={`flex items-start gap-3 py-3 sm:gap-4 sm:py-3 ${
                 index !== sections.length - 1
                   ? "border-b border-slate-100"
                   : ""
@@ -174,11 +171,11 @@ function Review({
         </div>
 
         
-        <div className="mt-6 flex items-center justify-between gap-4 border-t border-slate-100 pt-5">
+        <div className="mt-6 flex items-center justify-between gap-4 border-t border-slate-100 pt-5 [@media(min-width:901px)_and_(max-height:760px)]:mt-3 [@media(min-width:901px)_and_(max-height:760px)]:pt-3 max-[420px]:gap-3">
           <button
             type="button"
             onClick={onBack}
-            className="inline-flex items-center gap-2 rounded-lg px-2 py-2 text-sm font-medium text-blue-600 transition hover:text-blue-800"
+            className="inline-flex items-center gap-2 rounded-lg px-2 py-2 text-sm font-medium text-blue-600 transition hover:text-blue-800 max-[420px]:px-4"
           >
             <ArrowIcon direction="left" />
             Back
@@ -187,14 +184,13 @@ function Review({
           <button
             type="button"
             onClick={onSubmit}
-            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100 sm:px-7"
+            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100 sm:px-7 max-[420px]:px-4"
           >
             Submit
             <ArrowIcon direction="right" />
           </button>
         </div>
-      </div>
-    </div>
+    </WizardStepPanel>
   );
 }
 

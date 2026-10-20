@@ -1,7 +1,7 @@
 ﻿
-import StepIndicator from "../components/StepIndicator";
 import ArrowIcon from "../components/ArrowIcon";
 import FileUpload from "../components/FileUpload";
+import WizardStepPanel from "../components/WizardStepPanel";
 import { useOnboarding } from "../context/OnboardingContext";
 
 type UploadDocumentsProps = {
@@ -25,15 +25,12 @@ function UploadDocuments({ onBack, onNext }: UploadDocumentsProps) {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-6 sm:px-6 lg:p-8">
-      <div className="w-full max-w-3xl rounded-2xl border border-blue-100 bg-white p-5 shadow-sm sm:p-6 lg:p-8">
+    <WizardStepPanel>
 
         
-        <StepIndicator currentStep={3} />
-
         
-        <div className="mt-6">
-          <h1 className="text-2xl font-bold text-blue-950">
+        <div className="mt-0">
+          <h1 className="text-2xl font-bold tracking-[-0.025em] text-blue-950">
             Upload your documents
           </h1>
 
@@ -43,7 +40,7 @@ function UploadDocuments({ onBack, onNext }: UploadDocumentsProps) {
         </div>
 
         
-        <div className="mt-6">
+        <div className="mt-6 [@media(min-width:901px)_and_(max-height:760px)]:mt-3">
           <FileUpload
             label="Upload Documents"
             files={files}
@@ -52,11 +49,11 @@ function UploadDocuments({ onBack, onNext }: UploadDocumentsProps) {
         </div>
 
         
-        <div className="mt-7 flex items-center justify-between gap-4 border-t border-slate-100 pt-5">
+        <div className="mt-6 flex items-center justify-between gap-4 border-t border-slate-100 pt-5 [@media(min-width:901px)_and_(max-height:760px)]:mt-3 [@media(min-width:901px)_and_(max-height:760px)]:pt-3 max-[420px]:gap-3">
           <button
             type="button"
             onClick={onBack}
-            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-5 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
+            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-5 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 max-[420px]:px-4"
           >
             <ArrowIcon direction="left" />
             Back
@@ -65,14 +62,13 @@ function UploadDocuments({ onBack, onNext }: UploadDocumentsProps) {
           <button
             type="button"
             onClick={handleSubmit}
-            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100"
+            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100 max-[420px]:px-4"
           >
             Next
             <ArrowIcon direction="right" />
           </button>
         </div>
-      </div>
-    </div>
+    </WizardStepPanel>
   );
 }
 

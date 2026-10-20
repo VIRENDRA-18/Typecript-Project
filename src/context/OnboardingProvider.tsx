@@ -6,7 +6,7 @@ import type { OnboardingAction, OnboardingState, SavedSubmission } from "../type
 const STORAGE_KEY = "devflow-onboarding";
 
 const initialState: OnboardingState = {
-  step: 0,
+  step: 1,
   accountData: {
     fullName: "",
     email: "",

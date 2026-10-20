@@ -1,10 +1,9 @@
-﻿
-const steps = [
-  "Account",
-  "Business",
-  "Plan",
-  "Documents",
-  "Review",
+﻿const steps = [
+  "Create your account",
+  "Tell us about your business",
+  "Choose your plan",
+  "Upload documents",
+  "Review & submit",
 ];
 
 function StepIndicator({ currentStep = 0 }: { currentStep?: number }) {
@@ -47,7 +46,7 @@ function StepIndicator({ currentStep = 0 }: { currentStep?: number }) {
 
                 
                 <span
-                  className={`mt-3 w-full text-center text-xs sm:text-sm ${
+                  className={`mt-3 w-full px-0.5 text-center text-[10px] leading-tight sm:px-1 sm:text-xs ${
                     isActive
                       ? "font-semibold text-blue-600"
                       : isCompleted

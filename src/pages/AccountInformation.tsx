@@ -2,18 +2,17 @@
 import { useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import ArrowIcon from "../components/ArrowIcon";
-import StepIndicator from "../components/StepIndicator";
 import FormField from "../components/FormField";
+import WizardStepPanel from "../components/WizardStepPanel";
 import { validateAccountForm } from "../utils/validation";
 import { useOnboarding } from "../context/OnboardingContext";
 import type { AccountData } from "../types";
 
 type AccountInformationProps = {
-  onBack: () => void;
   onNext: () => void;
 };
 
-function AccountInformation({ onBack, onNext }: AccountInformationProps) {
+function AccountInformation({ onNext }: AccountInformationProps) {
   const { state, dispatch } = useOnboarding();
 
   const [errors, setErrors] = useState<Partial<Record<keyof AccountData, string>>>({});
@@ -80,26 +79,23 @@ function AccountInformation({ onBack, onNext }: AccountInformationProps) {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-6 sm:px-6 lg:p-8">
-      <div className="w-full max-w-3xl rounded-2xl border border-blue-100 bg-white p-5 shadow-sm sm:p-6 lg:p-8">
+    <WizardStepPanel>
 
         
-        <StepIndicator currentStep={0} />
-
         
-        <div className="mt-6">
-          <h1 className="text-2xl font-bold text-blue-950">
-            Create your account
+        <div className="mt-0">
+          <h1 className="text-2xl font-bold tracking-[-0.025em] text-blue-950">
+            Account Information
           </h1>
 
           <p className="mt-2 text-sm leading-6 text-slate-500">
-            Let's set up your basic information.
+            Please fill in your details to get started. You can always change this later.
           </p>
         </div>
 
         
-        <form onSubmit={handleSubmit}>
-          <div className="mt-6 space-y-4">
+        <form noValidate onSubmit={handleSubmit}>
+          <div className="mt-6 flex flex-col gap-4 [@media(min-width:901px)_and_(max-height:760px)]:mt-3 [@media(min-width:901px)_and_(max-height:760px)]:gap-3">
             <FormField
               label="Full Name"
               name="fullName"
@@ -142,7 +138,8 @@ function AccountInformation({ onBack, onNext }: AccountInformationProps) {
                   required
                   autoComplete="new-password"
                   aria-invalid={Boolean(errors.password)}
-                  className={`w-full appearance-none rounded-lg border px-4 py-3 pr-12 text-sm outline-none focus:ring-2 [&::-ms-reveal]:hidden [&::-webkit-credentials-auto-fill-button]:hidden ${
+                  aria-describedby={errors.password ? "password-error" : undefined}
+                  className={`w-full appearance-none rounded-lg border px-4 py-3 pr-12 text-sm outline-none focus:ring-2 [@media(min-width:901px)_and_(max-height:760px)]:py-2.5 [&::-ms-reveal]:hidden [&::-webkit-credentials-auto-fill-button]:hidden ${
                     errors.password
                       ? "border-red-500 focus:border-red-500 focus:ring-red-100"
                       : "border-slate-300 focus:border-blue-500 focus:ring-blue-100"
@@ -234,7 +231,7 @@ function AccountInformation({ onBack, onNext }: AccountInformationProps) {
 
               
               {errors.password && (
-                <p className="mt-1 text-sm text-red-500">
+                <p id="password-error" className="mt-1 text-sm text-red-500" role="alert">
                   {errors.password}
                 </p>
               )}
@@ -242,27 +239,24 @@ function AccountInformation({ onBack, onNext }: AccountInformationProps) {
           </div>
 
           
-          <div className="mt-7 flex items-center justify-between gap-4 border-t border-slate-100 pt-5">
-            <button
-              type="button"
-              onClick={onBack}
-              className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-5 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-slate-100"
-            >
-              <ArrowIcon direction="left" />
-              Back
-            </button>
+          <div className="mt-6 flex items-center justify-between gap-4 border-t border-slate-100 pt-5 [@media(min-width:901px)_and_(max-height:760px)]:mt-3 [@media(min-width:901px)_and_(max-height:760px)]:pt-3 max-[420px]:gap-3">
+            <p className="min-w-0 text-xs text-slate-500 sm:text-sm">
+              Already have an account?{" "}
+              <a href="#" className="font-medium text-blue-600 hover:underline">
+                Sign in
+              </a>
+            </p>
 
             <button
               type="submit"
-              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100"
+              className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100 max-[420px]:px-4"
             >
               Next
               <ArrowIcon direction="right" />
             </button>
           </div>
         </form>
-      </div>
-    </div>
+    </WizardStepPanel>
   );
 }
 

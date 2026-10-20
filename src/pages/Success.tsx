@@ -1,8 +1,10 @@
 ﻿
+import WizardStepPanel from "../components/WizardStepPanel";
+
 function Success({ onGoToDashboard }: { onGoToDashboard: () => void }) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-white px-5 py-10">
-      <div className="w-full max-w-md text-center">
+    <WizardStepPanel className="text-center">
+      <div className="mx-auto w-full max-w-md text-center">
 
         
         <div className="relative mx-auto mb-6 flex h-36 w-48 items-center justify-center">
@@ -54,12 +56,12 @@ function Success({ onGoToDashboard }: { onGoToDashboard: () => void }) {
         <button
           type="button"
           onClick={onGoToDashboard}
-          className="mt-6 rounded-md bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition duration-200 hover:bg-blue-700 hover:shadow-md focus:outline-none focus:ring-4 focus:ring-blue-100"
+          className="mt-6 rounded-md bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition duration-200 hover:bg-blue-700 hover:shadow-md focus:outline-none focus:ring-4 focus:ring-blue-100 [@media(min-width:901px)_and_(max-height:760px)]:mt-3"
         >
           Go to Dashboard
         </button>
       </div>
-    </div>
+    </WizardStepPanel>
   );
 }
 

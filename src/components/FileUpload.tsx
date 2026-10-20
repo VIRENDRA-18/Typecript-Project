@@ -228,7 +228,7 @@ function FileUpload({ label = "Upload Documents", files = [], onChange }: FileUp
           className="mt-3 space-y-1 rounded-lg border border-red-100 bg-red-50 p-3"
         >
           {errors.map((error, index) => (
-            <p key={`${error}-${index}`} className="text-xs text-red-600">
+            <p key={`${error}-${index}`} className="break-all text-xs text-red-600">
               {error}
             </p>
           ))}

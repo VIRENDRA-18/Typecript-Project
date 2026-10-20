@@ -1,7 +1,7 @@
 ﻿
-import StepIndicator from "../components/StepIndicator";
 import ArrowIcon from "../components/ArrowIcon";
 import CheckIcon from "../components/CheckIcon";
+import WizardStepPanel from "../components/WizardStepPanel";
 import { useOnboarding } from "../context/OnboardingContext";
 import type { Plan } from "../types";
 
@@ -48,15 +48,12 @@ function ChoosePlan({ onBack, onNext }: ChoosePlanProps) {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-6 sm:px-6 lg:p-8">
-      <div className="w-full max-w-4xl rounded-2xl border border-blue-100 bg-white p-5 shadow-sm sm:p-6 lg:p-8">
+    <WizardStepPanel>
 
         
-        <StepIndicator currentStep={2} />
-
         
-        <div className="mt-6">
-          <h1 className="text-2xl font-bold text-blue-950">
+        <div className="mt-0">
+          <h1 className="text-2xl font-bold tracking-[-0.025em] text-blue-950">
             Select your plan
           </h1>
 
@@ -66,7 +63,7 @@ function ChoosePlan({ onBack, onNext }: ChoosePlanProps) {
         </div>
 
         
-        <div className="mt-8 grid grid-cols-1 items-stretch gap-5 sm:grid-cols-3 sm:gap-4 lg:gap-5">
+        <div className="mt-6 grid grid-cols-1 items-stretch gap-5 md:grid-cols-2 sm:gap-4 lg:grid-cols-3 lg:gap-5 [@media(min-width:901px)_and_(max-height:760px)]:mt-3">
           {plans.map((plan) => {
             const isSelected = selectedPlan === plan.name;
             const isPopular = plan.name === "Pro";
@@ -104,7 +101,7 @@ function ChoosePlan({ onBack, onNext }: ChoosePlanProps) {
                 </div>
 
                 
-                <ul className="mt-5 flex-1 space-y-3">
+                <ul className="mt-5 flex-1 space-y-3 [@media(min-width:901px)_and_(max-height:760px)]:mt-3">
                   {plan.features.map((feature) => (
                     <li
                       key={feature}
@@ -126,7 +123,7 @@ function ChoosePlan({ onBack, onNext }: ChoosePlanProps) {
                     handleSelectPlan(plan.name);
                   }}
                   aria-pressed={isSelected}
-                  className={`mt-6 w-full rounded-lg px-3 py-2.5 text-sm font-semibold transition focus:outline-none focus:ring-4 focus:ring-blue-100 ${
+                  className={`mt-6 w-full rounded-lg px-3 py-2.5 text-sm font-semibold transition focus:outline-none focus:ring-4 focus:ring-blue-100 [@media(min-width:901px)_and_(max-height:760px)]:mt-3 ${
                     isSelected
                       ? "border border-blue-600 bg-blue-600 text-white hover:bg-blue-700"
                       : "border border-slate-200 bg-white text-blue-600 hover:border-blue-500 hover:bg-blue-50"
@@ -140,11 +137,11 @@ function ChoosePlan({ onBack, onNext }: ChoosePlanProps) {
         </div>
 
         
-        <div className="mt-7 flex items-center justify-between gap-4 border-t border-slate-100 pt-5">
+        <div className="mt-6 flex items-center justify-between gap-4 border-t border-slate-100 pt-5 [@media(min-width:901px)_and_(max-height:760px)]:mt-3 [@media(min-width:901px)_and_(max-height:760px)]:pt-3 max-[420px]:gap-3">
           <button
             type="button"
             onClick={onBack}
-            className="inline-flex items-center gap-2 rounded-lg px-1 py-2 text-sm font-medium text-blue-600 transition hover:text-blue-800"
+            className="inline-flex items-center gap-2 rounded-lg px-1 py-2 text-sm font-medium text-blue-600 transition hover:text-blue-800 max-[420px]:px-4"
           >
             <ArrowIcon direction="left" />
             Back
@@ -153,14 +150,13 @@ function ChoosePlan({ onBack, onNext }: ChoosePlanProps) {
           <button
             type="button"
             onClick={onNext}
-            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100"
+            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100 max-[420px]:px-4"
           >
             Next
             <ArrowIcon direction="right" />
           </button>
         </div>
-      </div>
-    </div>
+    </WizardStepPanel>
   );
 }
 
